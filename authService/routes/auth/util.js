@@ -31,18 +31,39 @@ const customHeaders = {
 };
 
 // Generate a JWT using the private key
-function generateJWTWithPrivateKey(payload) {}
+function generateJWTWithPrivateKey(payload) {
+  const token = jwt.sign(payload, privateKey, {
+    algorithm: "RS256",
+    header: customHeaders,
+    expiresIn: "6h",
+  });
+  return token;
+}
 
 // JWT verification function
-function verifyJWTWithPublicKey(token) {}
+function verifyJWTWithPublicKey(token) {
+  return jwt.verify(token, publicKey, { algorithms: ["RS256"] });
+}
 
 async function fetchStudents() {
-  const response = await axios.get(STUDENT_SERVICE);
+  const token = generateJWTWithPrivateKey({
+    id: ROLES.AUTH_SERVICE,
+    roles: [ROLES.AUTH_SERVICE],
+  });
+  const response = await axios.get(STUDENT_SERVICE, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
   return response.data;
 }
 
 async function fetchProfessors() {
-  const response = await axios.get(PROFESSOR__SERVICE);
+  const token = generateJWTWithPrivateKey({
+    id: ROLES.AUTH_SERVICE,
+    roles: [ROLES.AUTH_SERVICE],
+  });
+  const response = await axios.get(PROFESSOR__SERVICE, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
   return response.data;
 }
 module.exports = {
