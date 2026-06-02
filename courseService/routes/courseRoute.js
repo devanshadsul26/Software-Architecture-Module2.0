@@ -1,3 +1,4 @@
+const { courseServiceLogger } = require("../../logging");
 const express = require("express");
 const Course = require("../models/course");
 const router = express.Router();
@@ -12,9 +13,11 @@ router.post(
   verifyRole([ROLES.ADMIN, ROLES.PROFESSOR]),
   async (req, res) => {
     try {
+      courseServiceLogger.info(`[POST /api/courses] Creating course: ${req.body.name}`);
       req.body.createdBy = req.user.id;
       const course = new Course(req.body);
       await course.save();
+      courseServiceLogger.info(`[POST /api/courses] Course created successfully: ${course._id}`);
       res.status(201).json(course);
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -28,7 +31,9 @@ router.get(
   verifyRole([ROLES.ADMIN, ROLES.PROFESSOR, ROLES.ENROLLMENT_SERVICE]),
   async (req, res) => {
     try {
+      courseServiceLogger.info(`[GET /api/courses] Fetching all courses`);
       const courses = await Course.find();
+      courseServiceLogger.info(`[GET /api/courses] Found ${courses.length} courses`);
       res.status(200).json(courses);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -84,7 +89,7 @@ router.delete(
   async (req, res) => {
     try {
       const courseId = req.params.id; // Extract the course ID from the route parameter
-      console.log("Deleting course with ID:", courseId);
+      courseServiceLogger.info("Deleting course with ID:", courseId);
 
       // Attempt to find and delete the course
       const course = await Course.findByIdAndDelete(courseId);
@@ -96,7 +101,7 @@ router.delete(
       // Respond with success message
       res.status(200).json({ message: "Course deleted successfully", course });
     } catch (error) {
-      console.error(error);
+      courseServiceLogger.error(error);
 
       // Handle invalid ObjectId format
       if (error.kind === "ObjectId") {

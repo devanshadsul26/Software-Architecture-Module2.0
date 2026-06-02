@@ -1,3 +1,4 @@
+const { enrollementServiceLogger } = require("../../logging");
 const express = require("express");
 
 const Enrollment = require("../models/enrollment");
@@ -30,7 +31,7 @@ router.post(
       await enrollment.save();
       res.status(201).json(enrollment);
     } catch (error) {
-      console.log(error);
+      enrollementServiceLogger.info(error);
 
       res.status(500).json({
         message: "Server Error: Unable to create enrollment",
@@ -44,7 +45,9 @@ router.get(
   verifyRole([ROLES.ADMIN, ROLES.PROFESSOR]),
   async (req, res) => {
     try {
+      enrollementServiceLogger.info(`[GET /api/enrollments] Fetching all enrollments`);
       let enrollments = await Enrollment.find();
+      enrollementServiceLogger.info(`[GET /api/enrollments] Found ${enrollments.length} enrollments`);
       res.status(200).json(enrollments);
     } catch (error) {
       res.status(500).json({
@@ -133,6 +136,7 @@ router.delete(
   verifyRole([ROLES.ADMIN, ROLES.PROFESSOR]),
   async (req, res) => {
     try {
+      enrollementServiceLogger.info(`[DELETE /api/enrollments] Deleting enrollment: ${req.params.id}`);
       const enrollment = await Enrollment.findByIdAndDelete(req.params.id);
 
       if (!enrollment) {

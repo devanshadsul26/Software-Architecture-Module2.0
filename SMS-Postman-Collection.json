@@ -1,0 +1,479 @@
+{
+  "info": {
+    "name": "SMS - Student Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "adminToken",
+      "value": ""
+    },
+    {
+      "key": "professorToken",
+      "value": ""
+    },
+    {
+      "key": "studentToken",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth Service",
+      "item": [
+        {
+          "name": "Login - Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@sms.com\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5001/api/login/admin",
+              "host": ["localhost"],
+              "port": "5001",
+              "path": ["api", "login", "admin"]
+            }
+          }
+        },
+        {
+          "name": "Login - Professor",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@test.com\",\n  \"password\": \"password\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5001/api/login/professor",
+              "host": ["localhost"],
+              "port": "5001",
+              "path": ["api", "login", "professor"]
+            }
+          }
+        },
+        {
+          "name": "Login - Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"student@test.com\",\n  \"password\": \"password\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5001/api/login/student",
+              "host": ["localhost"],
+              "port": "5001",
+              "path": ["api", "login", "student"]
+            }
+          }
+        },
+        {
+          "name": "Get Public Key (JWKS)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5001/.well-known/jwks.json",
+              "host": ["localhost"],
+              "port": "5001",
+              "path": [".well-known", "jwks.json"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Professor Service",
+      "item": [
+        {
+          "name": "Get All Professors",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:5002/api/professors",
+              "host": ["localhost"],
+              "port": "5002",
+              "path": ["api", "professors"]
+            }
+          }
+        },
+        {
+          "name": "Get Professor by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:5002/api/professors/:id",
+              "host": ["localhost"],
+              "port": "5002",
+              "path": ["api", "professors", ":id"],
+              "variable": [{ "key": "id", "value": "PASTE_PROFESSOR_ID_HERE" }]
+            }
+          }
+        },
+        {
+          "name": "Create Professor",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Smith\",\n  \"email\": \"john@test.com\",\n  \"phone\": \"9876543210\",\n  \"password\": \"mypassword\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5002/api/professors",
+              "host": ["localhost"],
+              "port": "5002",
+              "path": ["api", "professors"]
+            }
+          }
+        },
+        {
+          "name": "Update Professor",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Smith Updated\",\n  \"phone\": \"1111111111\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5002/api/professors/:id",
+              "host": ["localhost"],
+              "port": "5002",
+              "path": ["api", "professors", ":id"],
+              "variable": [{ "key": "id", "value": "PASTE_PROFESSOR_ID_HERE" }]
+            }
+          }
+        },
+        {
+          "name": "Delete Professor",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:5002/api/professors/:id",
+              "host": ["localhost"],
+              "port": "5002",
+              "path": ["api", "professors", ":id"],
+              "variable": [{ "key": "id", "value": "PASTE_PROFESSOR_ID_HERE" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Student Service",
+      "item": [
+        {
+          "name": "Get All Students",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:5003/api/students",
+              "host": ["localhost"],
+              "port": "5003",
+              "path": ["api", "students"]
+            }
+          }
+        },
+        {
+          "name": "Get Student by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:5003/api/students/:id",
+              "host": ["localhost"],
+              "port": "5003",
+              "path": ["api", "students", ":id"],
+              "variable": [{ "key": "id", "value": "PASTE_STUDENT_ID_HERE" }]
+            }
+          }
+        },
+        {
+          "name": "Create Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Student\",\n  \"email\": \"student@test.com\",\n  \"phone\": \"5555555555\",\n  \"password\": \"mypassword\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5003/api/students",
+              "host": ["localhost"],
+              "port": "5003",
+              "path": ["api", "students"]
+            }
+          }
+        },
+        {
+          "name": "Update Student",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Student Updated\",\n  \"phone\": \"9999999999\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5003/api/students/:id",
+              "host": ["localhost"],
+              "port": "5003",
+              "path": ["api", "students", ":id"],
+              "variable": [{ "key": "id", "value": "PASTE_STUDENT_ID_HERE" }]
+            }
+          }
+        },
+        {
+          "name": "Delete Student",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:5003/api/students/:id",
+              "host": ["localhost"],
+              "port": "5003",
+              "path": ["api", "students", ":id"],
+              "variable": [{ "key": "id", "value": "PASTE_STUDENT_ID_HERE" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Course Service",
+      "item": [
+        {
+          "name": "Get All Courses",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:5004/api/courses",
+              "host": ["localhost"],
+              "port": "5004",
+              "path": ["api", "courses"]
+            }
+          }
+        },
+        {
+          "name": "Get Course by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:5004/api/courses/:id",
+              "host": ["localhost"],
+              "port": "5004",
+              "path": ["api", "courses", ":id"],
+              "variable": [{ "key": "id", "value": "PASTE_COURSE_ID_HERE" }]
+            }
+          }
+        },
+        {
+          "name": "Create Course",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Introduction to Computer Science\",\n  \"code\": \"CY502\",\n  \"description\": \"Understand the principles of cybersecurity and how to protect systems from potential threats.\",\n  \"schedule\": {\n    \"days\": [\"Wednesday\", \"Friday\"],\n    \"time\": \"11:00 AM - 1:00 PM\"\n  }\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5004/api/courses",
+              "host": ["localhost"],
+              "port": "5004",
+              "path": ["api", "courses"]
+            }
+          }
+        },
+        {
+          "name": "Update Course",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Advanced Computer Science\",\n  \"description\": \"Updated description\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5004/api/courses/:id",
+              "host": ["localhost"],
+              "port": "5004",
+              "path": ["api", "courses", ":id"],
+              "variable": [{ "key": "id", "value": "PASTE_COURSE_ID_HERE" }]
+            }
+          }
+        },
+        {
+          "name": "Delete Course",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:5004/api/courses/:id",
+              "host": ["localhost"],
+              "port": "5004",
+              "path": ["api", "courses", ":id"],
+              "variable": [{ "key": "id", "value": "PASTE_COURSE_ID_HERE" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Enrollment Service",
+      "item": [
+        {
+          "name": "Get All Enrollments",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:5005/api/enrollments",
+              "host": ["localhost"],
+              "port": "5005",
+              "path": ["api", "enrollments"]
+            }
+          }
+        },
+        {
+          "name": "Get Enrollment by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:5005/api/enrollments/:id",
+              "host": ["localhost"],
+              "port": "5005",
+              "path": ["api", "enrollments", ":id"],
+              "variable": [{ "key": "id", "value": "PASTE_ENROLLMENT_ID_HERE" }]
+            }
+          }
+        },
+        {
+          "name": "Get Enrollments by Student ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:5005/api/enrollments/student/:id",
+              "host": ["localhost"],
+              "port": "5005",
+              "path": ["api", "enrollments", "student", ":id"],
+              "variable": [{ "key": "id", "value": "PASTE_STUDENT_ID_HERE" }]
+            }
+          }
+        },
+        {
+          "name": "Get Enrollments by Course ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:5005/api/enrollments/course/:id",
+              "host": ["localhost"],
+              "port": "5005",
+              "path": ["api", "enrollments", "course", ":id"],
+              "variable": [{ "key": "id", "value": "PASTE_COURSE_ID_HERE" }]
+            }
+          }
+        },
+        {
+          "name": "Create Enrollment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"student\": \"PASTE_STUDENT_ID_HERE\",\n  \"course\": \"PASTE_COURSE_ID_HERE\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5005/api/enrollments",
+              "host": ["localhost"],
+              "port": "5005",
+              "path": ["api", "enrollments"]
+            }
+          }
+        },
+        {
+          "name": "Delete Enrollment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:5005/api/enrollments/:id",
+              "host": ["localhost"],
+              "port": "5005",
+              "path": ["api", "enrollments", ":id"],
+              "variable": [{ "key": "id", "value": "PASTE_ENROLLMENT_ID_HERE" }]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

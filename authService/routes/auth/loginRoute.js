@@ -8,10 +8,42 @@ const {
   fetchProfessors,
 } = require("./util");
 const { ROLES } = require("../../../consts");
+const { authServiceLogger } = require("../../../logging");
 
 const router = express.Router();
 
 dotenv.config();
+
+// Admin Login
+router.post("/admin", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
+    }
+
+    if (
+      email !== process.env.ADMIN_EMAIL ||
+      password !== process.env.ADMIN_PASSWORD
+    ) {
+      return res.status(401).json({ message: "Invalid Credentials" });
+    }
+
+    // generate a token
+    const token = generateJWTWithPrivateKey({
+      id: ROLES.ADMIN,
+      roles: [ROLES.ADMIN],
+    });
+    authServiceLogger.info(`Admin login successful: ${email}`);
+    return res.status(201).json({ access_token: token });
+  } catch (error) {
+    authServiceLogger.error(`Admin login error: ${error.message}`);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 // Student Login
 router.post("/student", async (req, res) => {
@@ -40,9 +72,10 @@ router.post("/student", async (req, res) => {
       id: student._id,
       roles: [ROLES.STUDENT],
     });
+    authServiceLogger.info(`Student login successful: ${email}`);
     return res.status(201).json({ access_token: token });
   } catch (error) {
-    console.log(error);
+    authServiceLogger.error(`Student login error: ${error.message}`);
     res.status(500).json({ message: "Server error" });
   }
 });
@@ -74,9 +107,10 @@ router.post("/professor", async (req, res) => {
       id: professor._id,
       roles: [ROLES.PROFESSOR],
     });
+    authServiceLogger.info(`Professor login successful: ${email}`);
     return res.status(201).json({ access_token: token });
   } catch (error) {
-    console.log(error);
+    authServiceLogger.error(`Professor login error: ${error.message}`);
     res.status(500).json({ message: "Server error" });
   }
 });
