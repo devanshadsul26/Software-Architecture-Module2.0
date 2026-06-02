@@ -1,3 +1,64 @@
+# Dependencies
 node_modules/
+package-lock.json
+yarn.lock
+.pnpm-lock.yaml
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.test
+.env.staging
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.sublime-project
+.sublime-workspace
+
+# OS files
 .DS_Store
-.claude/
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+debug.log
+
+# Coverage
+coverage/
+.nyc_output/
+*.lcov
+
+# Build
+dist/
+build/
+out/
+
+# Temp files
+tmp/
+temp/
+*.tmp
+.cache/
+.parcel-cache
+
+# Runtime
+.local/
+.env.vault
+*.bak
+*.backup
