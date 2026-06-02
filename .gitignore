@@ -1,6 +1,5 @@
 # Dependencies
 node_modules/
-package-lock.json
 yarn.lock
 .pnpm-lock.yaml
 
@@ -12,6 +11,11 @@ yarn.lock
 .env.production
 .env.test
 .env.staging
+
+# Security - Private cryptographic keys (NEVER commit!)
+*/routes/auth/keys/private.key
+*/routes/auth/keys/*.key.backup
+*.pem
 
 # IDE
 .vscode/
